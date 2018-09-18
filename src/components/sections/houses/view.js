@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, Button } from 'react-native'
+import { View, Text, Button, FlatList } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import styles from './styles'
 import * as api from '../../../api/'
@@ -16,10 +16,10 @@ export default class extends Component {
     }
 
     componentWillMount() {
-        this.fetchHousesList()
+        this._fetchHousesList()
     }
 
-    fetchHousesList() {
+    _fetchHousesList() {
         api.fetchHouses().then( response => { 
             console.log("Response fetchHouses", response)
             if (response && response.data && response.data.records) {
@@ -35,14 +35,31 @@ export default class extends Component {
         Actions.characters({ title: "Personajes" })
     }
 
+    _renderItem({ item, index }) {
+        console.log("_renderItem item: ", item)
+        console.log("_renderItem index: ", index)
+        return(
+            <View style={{height: 120, boderWidth: 1, borderColor: 'blue', alignItems: 'center', justifyContent: 'center'}}>
+                <Text>{item.nombre}</Text>
+            </View>
+        )
+    }
+
     render() {
         console.log("Response fetchHouses", this.state.housesList)
         return (
-            <View style={styles.container}>
+            <View style={styles.list}>
+                <FlatList 
+                    data={this.state.housesList}
+                    renderItem={ data => this._renderItem(data)}
+                    keyExtractor={ (item, i) => 'cell' + item.id }
+                />
+
                 <Text style={styles.text}>CASAS</Text>
                 <Button title={'Pulsar para ir a caracteres'}
                     color={'red'}
-                    onPress={ this.goToCharacters }/>
+                    onPress={ this.goToCharacters }
+                />
             </View>
         )
     }

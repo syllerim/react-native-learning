@@ -10,5 +10,8 @@ export default StyleSheet.create({
     text: {
         color: 'white', 
         fontWeight: '600'
+    },
+    list: {
+        flex: 1
     }
 })
