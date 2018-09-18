@@ -2,5 +2,6 @@
 //If we don't do this then we have to do on the other files import {Houses from 'long route to houses'}
 
 import Houses from './houses/view'
+import Characters from './characters/view'
 
-export { Houses }
+export { Houses, Characters }
