@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, Button, FlatList } from 'react-native'
+import { View, Text, FlatList, TouchableOpacity, Alert } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import styles from './styles'
 import * as api from '../../../api/'
@@ -8,7 +8,6 @@ export default class extends Component {
 
     constructor(props) {
         super(props)
-        this.goToCharacters = this.goToCharacters.bind(this)
 
         this.state = {
             housesList: []
@@ -31,36 +30,43 @@ export default class extends Component {
         })
     }
 
-    goToCharacters() {
-        Actions.characters({ title: "Personajes" })
+    _onHouseTapped(house) {
+        Alert.alert('Casa: ', house.nombre)
     }
 
-    _renderItem({ item, index }) {
-        console.log("_renderItem item: ", item)
-        console.log("_renderItem index: ", index)
-        return(
-            <View style={{height: 120, boderWidth: 1, borderColor: 'blue', alignItems: 'center', justifyContent: 'center'}}>
-                <Text>{item.nombre}</Text>
-            </View>
-        )
+    _renderItem({ item }) {
+        return <HouseCell house={item} onHousePress = {v=> this._onHouseTapped(v) }/>
     }
 
     render() {
-        console.log("Response fetchHouses", this.state.housesList)
         return (
-            <View style={styles.list}>
+            <View style={styles.container}>
                 <FlatList 
                     data={this.state.housesList}
-                    renderItem={ data => this._renderItem(data)}
+                    renderItem={ value => this._renderItem(value)}
                     keyExtractor={ (item, i) => 'cell' + item.id }
                 />
-
-                <Text style={styles.text}>CASAS</Text>
-                <Button title={'Pulsar para ir a caracteres'}
-                    color={'red'}
-                    onPress={ this.goToCharacters }
-                />
             </View>
+        )
+    }
+}
+
+class HouseCell extends Component {
+
+    static defaultProps = {
+        house: null,
+        onHousePress: () => {}
+    }
+
+    render() {
+        const { house } = this.props
+        const name = house ? house.nombre : '-'
+        return (
+            <TouchableOpacity 
+                onPress={ () => this.props.onHousePress(house) }
+                style={ styles.cell }>
+                <Text>{name}</Text>
+            </TouchableOpacity>
         )
     }
 }
