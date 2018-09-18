@@ -9,6 +9,10 @@ export default class extends Component {
     constructor(props) {
         super(props)
         this.goToCharacters = this.goToCharacters.bind(this)
+
+        this.state = {
+            housesList: []
+        }
     }
 
     componentWillMount() {
@@ -18,8 +22,12 @@ export default class extends Component {
     fetchHousesList() {
         api.fetchHouses().then( response => { 
             console.log("Response fetchHouses", response)
+            if (response && response.data && response.data.records) {
+                this.setState({ housesList: response.data.records })
+            }
         }).catch( error => {
             console.log("Error Response fetchHouses", error)
+            this.setState({ housesList: [] })
         })
     }
 
@@ -28,6 +36,7 @@ export default class extends Component {
     }
 
     render() {
+        console.log("Response fetchHouses", this.state.housesList)
         return (
             <View style={styles.container}>
                 <Text style={styles.text}>CASAS</Text>
