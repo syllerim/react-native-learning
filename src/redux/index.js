@@ -1,0 +1,1 @@
+import houses from './houses/reducer'
