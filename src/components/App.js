@@ -1,9 +1,19 @@
 import React, { Component } from 'react';
 import { StatusBar } from 'react-native'
-import { Router, Scene, Actions, Stack } from 'react-native-router-flux'
+import { Router, Scene, Stack } from 'react-native-router-flux'
 import { Houses, Characters } from './sections/'
-import { configureAxios } from '../api/'
 import * as api from './../api/'
+
+import { createStore, applyMiddleware, combineReducers } from 'redux'
+import { Provider, connect } from 'react-redux'
+import thunk from 'redux-thunk'
+
+import * as reducers from './../redux'
+const reducer = combineReducers(reducers)
+const store = createStore(
+    reducer, 
+    applyMiddleware(thunk)
+)
 
 export default class App extends Component {
 
@@ -16,12 +26,14 @@ export default class App extends Component {
 
     render() {
         return (
-            <Router>
-                <Stack key="root">
-                    <Scene key="houses" component={Houses} title="Casas" initial={true} hideNavBar={true}/>
-                    <Scene key="characters" component={Characters} title="Personajes" initial={false}/>
-                </Stack>
-            </Router>
+            <Provider store={store}>
+                <Router>
+                    <Stack key="root">
+                        <Scene key="houses" component={Houses} title="Casas" initial={true} hideNavBar={true}/>
+                        <Scene key="characters" component={Characters} title="Personajes" initial={false}/>
+                    </Stack>
+                </Router>
+            </Provider>
         )
     }
 }
