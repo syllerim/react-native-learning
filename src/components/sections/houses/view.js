@@ -3,7 +3,7 @@ import { View, Text, FlatList, TouchableOpacity, Alert } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import styles from './styles'
 import * as api from '../../../api/'
-
+import { HouseCell} from '../../widgets/'
 export default class extends Component {
 
     constructor(props) {
@@ -55,31 +55,6 @@ export default class extends Component {
                     extraData={this.state}
                 />
             </View>
-        )
-    }
-}
-
-class HouseCell extends Component {
-
-    static defaultProps = {
-        house: null,
-        onHousePress: () => {},
-        selected: null,
-        backgroundColor: 'green',
-        selectedBackgroundColor: 'lime'
-    }
-
-    render() {
-        const { house, selected } = this.props
-        const name = house ? house.nombre : '-'
-        const isSelected = selected && selected.id && house.id ? true : false
-        const backgroundColor = isSelected ? {backgroundColor: this.props.selectedBackgroundColor, borderColor: 'orange'} : { backgroundColor: this.props.backgroundColor}
-        return (
-            <TouchableOpacity 
-                onPress={ () => this.props.onHousePress(house) }
-                style={ [styles.cell, backgroundColor] }>
-                <Text>{name}</Text>
-            </TouchableOpacity>
         )
     }
 }
