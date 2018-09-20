@@ -3,15 +3,15 @@ import { View, Text, FlatList, TouchableOpacity, Alert } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import styles from './styles'
 import * as api from '../../../api/'
-import { HouseCell} from '../../widgets/'
+import { HouseCell} from './../../widgets/'
+
 export default class extends Component {
 
     constructor(props) {
         super(props)
 
         this.state = {
-            housesList: [],
-            selected: null
+            housesList: []
         }
     }
 
@@ -53,6 +53,8 @@ export default class extends Component {
                     renderItem={ value => this._renderItem(value)}
                     keyExtractor={ (item, i) => 'cell' + item.id }
                     extraData={this.state}
+                    numColumns={2}
+                    style={{paddingTop: 40}}
                 />
             </View>
         )
